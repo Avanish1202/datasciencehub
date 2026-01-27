@@ -25,18 +25,47 @@ st.markdown("""
     footer { visibility: hidden; }
     .stApp { background-color: #ffffff; }
 
-    /* 2. HEADER & HERO */
+    /* 2. HEADER & HERO (UPDATED) */
     .nav-logo {
         font-size: 24px; font-weight: 800; color: #1a1a1a; text-decoration: none;
     }
     .hero-box {
-        text-align: center; padding: 50px 20px;
-        background: radial-gradient(circle at center, #fdfbf7 0%, #fff 70%);
-        border-radius: 20px; margin-bottom: 40px;
+        text-align: center; 
+        padding: 60px 20px;
+        /* Soft colorful background instead of plain radial */
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        border-radius: 20px; 
+        margin-bottom: 40px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
-    .hero-title { font-size: 3rem; font-weight: 800; color: #111; margin: 0; }
-    .hero-subtitle { font-size: 3rem; font-weight: 800; color: #8b5cf6; margin: 0; }
-    .hero-text { font-size: 1.1rem; color: #666; margin-top: 15px; }
+    .hero-title { 
+        font-size: 3.5rem; 
+        font-weight: 800; 
+        margin: 0;
+        /* Gradient Text Effect */
+        background: -webkit-linear-gradient(45deg, #6a11cb, #2575fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle { 
+        font-size: 2.5rem; 
+        font-weight: 700; 
+        color: #444; 
+        margin-top: 5px; 
+    }
+    .hero-desc { 
+        font-size: 1.15rem; 
+        color: #555; 
+        margin-top: 20px; 
+        max-width: 800px; 
+        margin-left: auto; 
+        margin-right: auto;
+        line-height: 1.6;
+    }
+    .highlight {
+        color: #2575fc;
+        font-weight: 600;
+    }
 
     /* 3. SUBJECT CARDS */
     .card-link { text-decoration: none !important; color: inherit; display: block; }
@@ -86,7 +115,6 @@ st.markdown("""
     a { text-decoration: none !important; }
 </style>
 """, unsafe_allow_html=True)
-
 # --- DATA FUNCTIONS ---
 def load_data():
     required_columns = ["Title", "Category", "Link", "Date_Added"]
@@ -250,3 +278,4 @@ else:
                     df = df.drop(idx)
                     save_data(df)
                     st.rerun()
+
