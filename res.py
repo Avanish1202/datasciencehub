@@ -25,14 +25,13 @@ st.markdown("""
     footer { visibility: hidden; }
     .stApp { background-color: #ffffff; }
 
-    /* 2. HEADER & HERO (UPDATED) */
+    /* 2. HEADER & HERO (UPDATED COLORS) */
     .nav-logo {
         font-size: 24px; font-weight: 800; color: #1a1a1a; text-decoration: none;
     }
     .hero-box {
         text-align: center; 
         padding: 60px 20px;
-        /* Soft colorful background instead of plain radial */
         background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
         border-radius: 20px; 
         margin-bottom: 40px;
@@ -42,7 +41,7 @@ st.markdown("""
         font-size: 3.5rem; 
         font-weight: 800; 
         margin: 0;
-        /* Gradient Text Effect */
+        /* Main Title Gradient (Purple to Blue) */
         background: -webkit-linear-gradient(45deg, #6a11cb, #2575fc);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -50,12 +49,17 @@ st.markdown("""
     .hero-subtitle { 
         font-size: 2.5rem; 
         font-weight: 700; 
-        color: #444; 
         margin-top: 5px; 
+        /* Subtitle Gradient (Matching the Title) */
+        background: -webkit-linear-gradient(45deg, #6a11cb, #2575fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .hero-desc { 
         font-size: 1.15rem; 
-        color: #555; 
+        font-weight: 500;
+        /* Descriptive Text Color (Deep Purple/Blue - Not Black) */
+        color: #4c1d95; 
         margin-top: 20px; 
         max-width: 800px; 
         margin-left: auto; 
@@ -278,4 +282,5 @@ else:
                     df = df.drop(idx)
                     save_data(df)
                     st.rerun()
+
 
