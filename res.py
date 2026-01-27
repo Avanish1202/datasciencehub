@@ -180,7 +180,7 @@ if current_page == "Home":
     st.markdown("""
         <div class="hero-box">
             <h1 class="hero-title">Master Data Science</h1>
-            <h1 class="hero-subtitle">One Resource at a Time</h1>
+            <h1 class="hero-subtitle">All Resource at a One Place</h1>
             <p class="hero-text">Select a topic below to access curated notes, videos, and datasets.</p>
         </div>
     """, unsafe_allow_html=True)
@@ -282,5 +282,6 @@ else:
                     df = df.drop(idx)
                     save_data(df)
                     st.rerun()
+
 
 
