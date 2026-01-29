@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
+import os
 import datetime
-from streamlit_gsheets import GSheetsConnection
 
 # --- CONFIGURATION ---
+DATA_FILE = "resources.csv"
 ADMIN_USER = "avanish1202"
 ADMIN_PASS = "1202"
 
@@ -854,20 +855,6 @@ st.markdown(f"""
         background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
     }}
     
-    /* LOADING SPINNER */
-    .loading-spinner {{
-        text-align: center;
-        padding: 40px;
-        color: var(--accent-primary);
-        font-size: 1.2rem;
-        animation: pulse 1.5s ease-in-out infinite;
-    }}
-    
-    @keyframes pulse {{
-        0%, 100% {{ opacity: 1; }}
-        50% {{ opacity: 0.5; }}
-    }}
-    
     /* RESPONSIVE DESIGN */
     @media (max-width: 1024px) {{
         .hero-title {{ font-size: 3.5rem; }}
@@ -927,60 +914,26 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# --- DATA FUNCTIONS WITH GOOGLE SHEETS ---
-@st.cache_data(ttl=60)  # Cache for 60 seconds
+# --- DATA FUNCTIONS ---
 def load_data():
-    """Load data from Google Sheets"""
-    try:
-        conn = st.connection("gsheets", type=GSheetsConnection)
-        df = conn.read(worksheet="Resources", usecols=[0, 1, 2, 3], ttl=60)
-        
-        # Clean up any completely empty rows
-        df = df.dropna(how='all')
-        
-        # Ensure required columns exist
-        required_columns = ["Title", "Category", "Link", "Date_Added"]
-        for col in required_columns:
-            if col not in df.columns:
-                df[col] = ""
-        
-        # Fill NaN values with empty strings
-        df = df.fillna("")
-        
+    required_columns = ["Title", "Category", "Link", "Date_Added"]
+    if not os.path.exists(DATA_FILE):
+        df = pd.DataFrame(columns=required_columns)
+        df.to_csv(DATA_FILE, index=False)
         return df
-    except Exception as e:
-        st.error(f"Error loading data: {str(e)}")
-        # Return empty dataframe with required columns
-        return pd.DataFrame(columns=["Title", "Category", "Link", "Date_Added"])
+    
+    df = pd.read_csv(DATA_FILE)
+    save_required = False
+    for col in required_columns:
+        if col not in df.columns:
+            df[col] = datetime.date.today()
+            save_required = True
+    if save_required:
+        df.to_csv(DATA_FILE, index=False)
+    return df
 
 def save_data(df):
-    """Save data to Google Sheets"""
-    try:
-        conn = st.connection("gsheets", type=GSheetsConnection)
-        # Clean the dataframe before saving
-        df_clean = df.fillna("")
-        conn.update(worksheet="Resources", data=df_clean)
-        # Clear cache after update
-        st.cache_data.clear()
-        return True
-    except Exception as e:
-        st.error(f"Error saving data: {str(e)}")
-        return False
-
-def add_resource(title, category, link):
-    """Add a new resource to Google Sheets"""
-    df = load_data()
-    new_row = pd.DataFrame([[title, category, link, str(datetime.date.today())]], 
-                          columns=["Title", "Category", "Link", "Date_Added"])
-    df = pd.concat([df, new_row], ignore_index=True)
-    return save_data(df)
-
-def delete_resource(index):
-    """Delete a resource from Google Sheets"""
-    df = load_data()
-    df = df.drop(index)
-    df = df.reset_index(drop=True)
-    return save_data(df)
+    df.to_csv(DATA_FILE, index=False)
 
 # --- NAVIGATION ---
 query_params = st.query_params
@@ -1132,11 +1085,13 @@ else:
                 l = c_add2.text_input("🔗 Drive Link")
                 if st.form_submit_button("✨ Upload Resource"):
                     if t and l:
-                        if add_resource(t, current_page, l):
-                            st.success("✅ Resource added successfully!")
-                            st.rerun()
-                        else:
-                            st.error("❌ Failed to add resource. Please try again.")
+                        df_load = load_data()
+                        new_row = pd.DataFrame([[t, current_page, l, datetime.date.today()]], 
+                                             columns=["Title", "Category", "Link", "Date_Added"])
+                        df_load = pd.concat([df_load, new_row], ignore_index=True)
+                        save_data(df_load)
+                        st.success("✅ Resource added successfully!")
+                        st.rerun()
                     else:
                         st.warning("⚠️ Please fill in all fields")
 
@@ -1150,10 +1105,8 @@ else:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # List Resources
-    with st.spinner("Loading resources..."):
-        df = load_data()
-    
-    filtered = df[df['Category'] == current_page].copy()
+    df = load_data()
+    filtered = df[df['Category'] == current_page]
     if search_q:
         filtered = filtered[filtered['Title'].str.contains(search_q, case=False, na=False)]
 
@@ -1182,11 +1135,9 @@ else:
             with col2:
                 if st.session_state.get("is_admin"):
                     if st.button("🗑️", key=f"del_{idx}", help="Delete this resource"):
-                        if delete_resource(idx):
-                            st.success("✅ Resource deleted!")
-                            st.rerun()
-                        else:
-                            st.error("❌ Failed to delete resource.")
+                        df = df.drop(idx)
+                        save_data(df)
+                        st.rerun()
 
 # Close main container
 st.markdown('</div>', unsafe_allow_html=True)
