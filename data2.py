@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import datetime
 from streamlit.connections import ExperimentalBaseConnection
-from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 # --- CONFIGURATION ---
