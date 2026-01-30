@@ -953,8 +953,64 @@ else:
         </div>
     """, unsafe_allow_html=True)
 
+    # Admin Add Resource Section
     if st.session_state.get("is_admin"):
-        st.info("📝 To add resources, please edit the Google Sheet directly: [Open Sheet](https://docs.google.com/spreadsheets/d/1RY-l0IvjXf5AVecKv9uffOa8BCHWfY048WAmBdxVkD8/edit)")
+        with st.expander("➕ Add New Resource", expanded=False):
+            with st.form("add_resource_form", clear_on_submit=True):
+                new_title = st.text_input("Resource Title*", placeholder="e.g., Python for Data Science")
+                new_link = st.text_input("Resource Link*", placeholder="https://...")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    submit_btn = st.form_submit_button("✅ Add Resource")
+                with col2:
+                    if st.form_submit_button("📋 View Google Sheet"):
+                        st.markdown("[Open Google Sheet](https://docs.google.com/spreadsheets/d/1RY-l0IvjXf5AVecKv9uffOa8BCHWfY048WAmBdxVkD8/edit)", unsafe_allow_html=True)
+                
+                if submit_btn:
+                    if new_title and new_link:
+                        # Create new row data
+                        new_row = {
+                            'Title': new_title,
+                            'Category': current_page,
+                            'Link': new_link,
+                            'Date_Added': datetime.datetime.now().strftime('%Y-%m-%d')
+                        }
+                        
+                        # Load current data
+                        df = load_data()
+                        
+                        # Append new row
+                        df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+                        
+                        # Show success and instructions
+                        st.success(f"✅ Resource '{new_title}' prepared!")
+                        st.info("📝 To save permanently, please add this resource to the Google Sheet:\n\n"
+                                f"**Title:** {new_title}\n\n"
+                                f"**Category:** {current_page}\n\n"
+                                f"**Link:** {new_link}\n\n"
+                                f"**Date:** {new_row['Date_Added']}\n\n"
+                                "[Click here to open Google Sheet](https://docs.google.com/spreadsheets/d/1RY-l0IvjXf5AVecKv9uffOa8BCHWfY048WAmBdxVkD8/edit)")
+                        
+                        # Show preview of what will be added
+                        st.markdown("---")
+                        st.markdown("**Preview of new resource:**")
+                        st.markdown(f"""
+                        <div class="resource-item">
+                            <div style="display:flex; align-items:center;">
+                                <div class="res-icon">📄</div>
+                                <div class="res-info">
+                                    <div class="res-title">{new_title}</div>
+                                    <div class="res-date">📅 Added: {new_row['Date_Added']}</div>
+                                </div>
+                            </div>
+                            <a href="{new_link}" target="_blank" class="res-link-btn">View Resource →</a>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    else:
+                        st.error("❌ Please fill in all required fields (Title and Link)")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
 
     col_nav, col_search = st.columns([1, 4])
     with col_nav:
