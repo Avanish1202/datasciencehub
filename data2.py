@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 import datetime
-from streamlit.connections import ExperimentalBaseConnection
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
 
 # --- CONFIGURATION ---
 ADMIN_USER = "avanish1202"
@@ -1124,15 +1121,4 @@ else:
             st.markdown(f"""
             <div class="resource-item">
                 <div style="display:flex; align-items:center;">
-                    <div class="res-icon">📄</div>
-                    <div class="res-info">
-                        <div class="res-title">{row['Title']}</div>
-                        <div class="res-date">📅 Added: {date_val}</div>
-                    </div>
-                </div>
-                <a href="{row['Link']}" target="_blank" class="res-link-btn">View Resource →</a>
-            </div>
-            """, unsafe_allow_html=True)
-
-# Close main container
-st.markdown('</div>', unsafe_allow_html=True)
+                    <div class="res-icon">
