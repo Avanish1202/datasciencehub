@@ -59,9 +59,8 @@ if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
 
 # --- ULTIMATE CSS STYLING WITH DARK/LIGHT MODE ---
-st.markdown(f"""
+css_content = f"""
 <style>
-    /* IMPORT MODERN FONTS */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
     
     * {{
@@ -71,7 +70,6 @@ st.markdown(f"""
         box-sizing: border-box;
     }}
     
-    /* THEME VARIABLES */
     :root {{
         --bg-primary: {'#0f0f23' if st.session_state.dark_mode else '#f8f9fa'};
         --bg-secondary: {'#1a1a2e' if st.session_state.dark_mode else '#ffffff'};
@@ -83,7 +81,6 @@ st.markdown(f"""
         --shadow-color: {'rgba(0, 0, 0, 0.5)' if st.session_state.dark_mode else 'rgba(0, 0, 0, 0.1)'};
     }}
     
-    /* HIDE DEFAULT ELEMENTS */
     [data-testid="stSidebar"] {{ display: none; }} 
     #MainMenu {{ visibility: hidden; }}
     footer {{ visibility: hidden; }}
@@ -93,7 +90,6 @@ st.markdown(f"""
     .stApp > header {{ display: none !important; }}
     [data-testid="stDecoration"] {{ display: none !important; }}
     
-    /* Remove top padding */
     .main .block-container {{
         padding-top: 0 !important;
         margin-top: 0 !important;
@@ -107,18 +103,15 @@ st.markdown(f"""
         display: none !important;
     }}
     
-    /* SMOOTH SCROLLING */
     html {{
         scroll-behavior: smooth;
     }}
     
-    /* BASE APP STYLING */
     .stApp {{
         background: var(--bg-primary);
         transition: background 0.3s ease;
     }}
     
-    /* ANIMATED BACKGROUND PARTICLES */
     .stApp::before {{
         content: '';
         position: fixed;
@@ -141,7 +134,6 @@ st.markdown(f"""
         66% {{ transform: translate(-20px, 20px) scale(0.9); }}
     }}
     
-    /* MAIN CONTAINER */
     .main-container {{
         background: var(--bg-secondary);
         backdrop-filter: blur(20px);
@@ -165,7 +157,6 @@ st.markdown(f"""
         }}
     }}
     
-    /* NAVIGATION BAR */
     .nav-bar {{
         display: flex;
         justify-content: space-between;
@@ -228,7 +219,6 @@ st.markdown(f"""
         filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
     }}
     
-    /* WATERMARK STYLING */
     .watermark {{
         position: absolute;
         top: -22px;
@@ -249,30 +239,6 @@ st.markdown(f"""
         z-index: 1;
     }}
     
-    /* THEME TOGGLE BUTTON */
-    .theme-toggle {{
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        color: white;
-        border-radius: 50px;
-        padding: 10px 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 20px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 600;
-        backdrop-filter: blur(10px);
-    }}
-    
-    .theme-toggle:hover {{
-        background: rgba(255, 255, 255, 0.3);
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }}
-    
-    /* HERO SECTION */
     .hero-box {{
         text-align: center;
         padding: 100px 40px;
@@ -296,7 +262,6 @@ st.markdown(f"""
         }}
     }}
     
-    /* Animated gradient background */
     .hero-box::before {{
         content: '';
         position: absolute;
@@ -420,7 +385,6 @@ st.markdown(f"""
         transform: translateY(-3px) scale(1.05);
     }}
     
-    /* SECTION TITLES */
     .section-title {{
         font-size: 2.5rem;
         font-weight: 800;
@@ -447,15 +411,6 @@ st.markdown(f"""
     @keyframes expandWidth {{
         from {{ width: 0; }}
         to {{ width: 100px; }}
-    }}
-    
-    /* SUBJECT CARDS GRID */
-    .cards-grid {{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 30px;
-        margin-top: 50px;
-        animation: fadeIn 1s ease;
     }}
     
     .subject-card {{
@@ -552,14 +507,6 @@ st.markdown(f"""
         color: rgba(255,255,255,0.9);
     }}
     
-    /* Staggered animation for cards */
-    .subject-card:nth-child(1) {{ animation-delay: 0.1s; }}
-    .subject-card:nth-child(2) {{ animation-delay: 0.2s; }}
-    .subject-card:nth-child(3) {{ animation-delay: 0.3s; }}
-    .subject-card:nth-child(4) {{ animation-delay: 0.4s; }}
-    .subject-card:nth-child(5) {{ animation-delay: 0.5s; }}
-    .subject-card:nth-child(6) {{ animation-delay: 0.6s; }}
-    
     @keyframes cardAppear {{
         from {{
             opacity: 0;
@@ -571,7 +518,6 @@ st.markdown(f"""
         }}
     }}
     
-    /* RESOURCE ITEMS */
     .resource-item {{
         background: var(--bg-card);
         border: 2px solid transparent;
@@ -672,30 +618,11 @@ st.markdown(f"""
         overflow: hidden;
     }}
     
-    .res-link-btn::before {{
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }}
-    
-    .res-link-btn:hover::before {{
-        width: 300px;
-        height: 300px;
-    }}
-    
     .res-link-btn:hover {{
         transform: scale(1.05);
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
     }}
     
-    /* PAGE HEADER */
     .page-header {{
         padding: 80px 40px;
         border-radius: 30px;
@@ -728,7 +655,6 @@ st.markdown(f"""
         z-index: 1;
     }}
     
-    /* BACK BUTTON */
     .back-btn {{
         display: inline-flex;
         align-items: center;
@@ -749,7 +675,6 @@ st.markdown(f"""
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
     }}
     
-    /* STREAMLIT ELEMENTS STYLING */
     .stButton > button {{
         background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) !important;
         color: white !important;
@@ -781,7 +706,6 @@ st.markdown(f"""
         background: transparent !important;
     }}
     
-    /* TEXT VISIBILITY FIXES WITH SMOOTH TRANSITIONS */
     .main-container p,
     .main-container span,
     .main-container div,
@@ -804,7 +728,6 @@ st.markdown(f"""
         transition: color 0.3s ease !important;
     }}
     
-    /* Ensure all Streamlit text elements adapt */
     .stMarkdown, .stMarkdown p, .stMarkdown div, .stMarkdown span,
     .stTextInput label, .stTextInput p,
     label[data-testid="stWidgetLabel"],
@@ -813,20 +736,11 @@ st.markdown(f"""
         transition: color 0.3s ease !important;
     }}
     
-    /* Card text transitions */
-    .card-title,
-    .res-title,
-    .res-date {{
-        transition: color 0.3s ease !important;
-    }}
-    
-    /* Input placeholders */
     ::placeholder {{
         color: var(--text-secondary) !important;
         opacity: 0.7 !important;
     }}
     
-    /* Info/Success/Warning messages */
     .stAlert {{
         border-radius: 12px !important;
         animation: alertSlide 0.5s ease !important;
@@ -837,26 +751,6 @@ st.markdown(f"""
         to {{ transform: translateX(0); opacity: 1; }}
     }}
     
-    /* Expander styling */
-    .streamlit-expanderHeader {{
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) !important;
-        color: white !important;
-        border-radius: 12px !important;
-        font-weight: 600 !important;
-        transition: all 0.3s ease !important;
-    }}
-    
-    .streamlit-expanderHeader:hover {{
-        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3) !important;
-        transform: scale(1.02) !important;
-    }}
-    
-    .streamlit-expanderContent {{
-        background: var(--bg-card) !important;
-        border-radius: 0 0 12px 12px !important;
-    }}
-    
-    /* Admin Popover */
     [data-testid="stPopover"] > button {{
         background: rgba(255, 255, 255, 0.2) !important;
         border: 2px solid rgba(255, 255, 255, 0.3) !important;
@@ -872,7 +766,6 @@ st.markdown(f"""
         transform: scale(1.05) !important;
     }}
     
-    /* CUSTOM SCROLLBAR */
     ::-webkit-scrollbar {{
         width: 14px;
         height: 14px;
@@ -893,15 +786,6 @@ st.markdown(f"""
         background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
     }}
     
-    /* RESPONSIVE DESIGN */
-    @media (max-width: 1024px) {{
-        .hero-title {{ font-size: 3.5rem; }}
-        .hero-subtitle {{ font-size: 2.2rem; }}
-        .cards-grid {{ grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }}
-        .nav-bar {{ padding: 15px 25px; }}
-        .watermark {{ font-size: 0.7rem; }}
-    }}
-    
     @media (max-width: 768px) {{
         .hero-title {{ font-size: 2.5rem; }}
         .hero-subtitle {{ font-size: 1.8rem; }}
@@ -910,39 +794,21 @@ st.markdown(f"""
         .nav-logo {{ font-size: 20px; }}
         .nav-bar {{ padding: 12px 15px; }}
         .main-container {{ margin-top: 80px; padding: 15px; }}
-        .cards-grid {{ grid-template-columns: 1fr; }}
-        .section-title {{ font-size: 2rem; }}
         .page-header h1 {{ font-size: 3rem; }}
         .resource-item {{ flex-direction: column; gap: 15px; text-align: center; }}
         .res-icon {{ margin-right: 0; }}
-        .watermark {{ font-size: 0.65rem; top: -20px; }}
     }}
     
-    @media (max-width: 480px) {{
-        .hero-title {{ font-size: 2rem; }}
-        .hero-subtitle {{ font-size: 1.5rem; }}
-        .hero-text {{ font-size: 1rem; }}
-        .nav-logo {{ font-size: 18px; }}
-        .nav-bar {{ padding: 10px 12px; }}
-        .main-container {{ margin-top: 75px; padding: 12px; }}
-        .hero-cta {{ flex-direction: column; gap: 10px; }}
-        .cta-button {{ width: 100%; justify-content: center; padding: 12px 20px; font-size: 0.95rem; }}
-        .watermark {{ font-size: 0.6rem; top: -18px; }}
-    }}
-    
-    /* FADE IN ANIMATION */
     @keyframes fadeIn {{
         from {{ opacity: 0; }}
         to {{ opacity: 1; }}
     }}
     
-    /* LINKS */
     a {{
         text-decoration: none !important;
         transition: all 0.3s ease;
     }}
     
-    /* NO SELECT ON DECORATIVE ELEMENTS */
     .hero-box::before,
     .nav-bar::before,
     .subject-card::before {{
@@ -950,13 +816,15 @@ st.markdown(f"""
         pointer-events: none;
     }}
 </style>
-""", unsafe_allow_html=True)
+"""
+
+st.markdown(css_content, unsafe_allow_html=True)
 
 # --- NAVIGATION ---
 query_params = st.query_params
 current_page = query_params.get("page", "Home")
 
-# --- NAVIGATION BAR (OUTSIDE MAIN CONTAINER) ---
+# --- NAVIGATION BAR ---
 st.markdown('<div class="nav-bar">', unsafe_allow_html=True)
 col_logo, col_spacer, col_controls = st.columns([3, 5, 2])
 
@@ -969,19 +837,17 @@ with col_logo:
     ''', unsafe_allow_html=True)
 
 with col_spacer:
-    st.markdown('')  # Empty space
+    st.markdown('')
 
 with col_controls:
     subcol1, subcol2 = st.columns(2)
     
-    # Theme Toggle
     with subcol1:
         theme_icon = "🌙" if not st.session_state.dark_mode else "☀️"
         if st.button(theme_icon, key="theme_toggle", help="Toggle Dark/Light Mode"):
             st.session_state.dark_mode = not st.session_state.dark_mode
             st.rerun()
     
-    # Admin Login
     with subcol2:
         with st.popover("👤", help="Admin Access"):
             st.markdown("### 🔐 Admin Login")
@@ -1011,7 +877,6 @@ st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
 # --- MAIN CONTENT ---
 if current_page == "Home":
-    # Enhanced Hero Section
     st.markdown("""
         <div class="hero-box">
             <div class="hero-content">
@@ -1034,7 +899,6 @@ if current_page == "Home":
         </div>
     """, unsafe_allow_html=True)
 
-    # Subject Cards with descriptions
     st.markdown('<h2 class="section-title" id="explore">📚 Explore Subjects</h2>', unsafe_allow_html=True)
     
     subjects = [
@@ -1046,7 +910,6 @@ if current_page == "Home":
         ("Other", "📚", "Explore additional resources and tools")
     ]
     
-    # Create 3 columns for cards
     for i in range(0, len(subjects), 3):
         cols = st.columns(3)
         for j, (title, icon, desc) in enumerate(subjects[i:i+3]):
@@ -1064,9 +927,6 @@ if current_page == "Home":
                 """, unsafe_allow_html=True)
 
 else:
-    # --- SUBJECT PAGE ---
-    
-    # Page Header with specific gradient
     gradients = {
         "Python": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
         "MySQL": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
@@ -1093,11 +953,9 @@ else:
         </div>
     """, unsafe_allow_html=True)
 
-    # Admin Info Message
     if st.session_state.get("is_admin"):
         st.info("📝 To add resources, please edit the Google Sheet directly: [Open Sheet](https://docs.google.com/spreadsheets/d/1RY-l0IvjXf5AVecKv9uffOa8BCHWfY048WAmBdxVkD8/edit)")
 
-    # Navigation & Search
     col_nav, col_search = st.columns([1, 4])
     with col_nav:
         st.markdown('<a href="?page=Home" target="_self" class="back-btn">← Back Home</a>', unsafe_allow_html=True)
@@ -1106,7 +964,6 @@ else:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # List Resources
     df = load_data()
     filtered = df[df['Category'] == current_page]
     if search_q:
@@ -1121,4 +978,14 @@ else:
             st.markdown(f"""
             <div class="resource-item">
                 <div style="display:flex; align-items:center;">
-                    <div class="res-icon">
+                    <div class="res-icon">📄</div>
+                    <div class="res-info">
+                        <div class="res-title">{row['Title']}</div>
+                        <div class="res-date">📅 Added: {date_val}</div>
+                    </div>
+                </div>
+                <a href="{row['Link']}" target="_blank" class="res-link-btn">View Resource →</a>
+            </div>
+            """, unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
